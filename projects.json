@@ -1,0 +1,120 @@
+[
+  {
+    "id": 1,
+    "title": "Interactive Tile Chooser",
+    "screenshot": "interactive-tile-chooser-0.png",
+    "description": "A canvas based component which lets users make tile designs by using different patterns, borders and colors.",
+    "technology": "HTML, CSS, JavaScript, HTML5 Canvas and PHP.",
+    "role": "Developing Interactive Tile Chooser and implementation on alhambrahome.co.uk",
+    "access": "http://alhambrahome.co.uk/pages/tile-chooser"
+  },
+  {
+    "id": 2,
+    "title": "Fashion Space Gallery",
+    "screenshot": "fashion-space-gallery-0.png",
+    "description": "Fashion Space Gallery is an exciting contemporary exhibition space, presenting a critically rigorous and popular programme of changing exhibitions engaging with fashion and design in its widest sense.",
+    "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
+    "role": "Development and deployment of a complete wordpress custom theme.",
+    "access": "http://www.fashionspacegallery.com"
+  },
+  {
+    "id": 3,
+    "title": "HLA - (Helen Langridge Associates)",
+    "screenshot": "hla-0.png",
+    "description": "Helen Langridge Associates is one of the most acclaimed, respected and successful production companies in the UK. The website showcases all the works of the company by different directors.",
+    "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
+    "role": "Development and deployment of a complete wordpress custom theme.",
+    "access": "http://hla.net"
+  },
+  {
+    "id": 4,
+    "title": "Jamie Fobert Architects",
+    "screenshot": "jamie-fobert-architects-0.png",
+    "description": "Jamie Fobert Architects has had a reputation for innovative and inspiring architectural design in the residential, arts and retail sectors. The website contains their work archives, achievements and a blog.",
+    "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
+    "role": "Development and deployment of a complete wordpress custom theme.",
+    "access": "http://jamiefobertarchitects.com"
+  },
+  {
+    "id": 5,
+    "title": "Jerwood Open Forest",
+    "screenshot": "jerwood-open-forest-0.png",
+    "description": "Jerwood Open Forest is a collaboration between Jerwood Charitable Foundation and Forestry Commission England with the support of Arts Council England.",
+    "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
+    "role": "Development and deployment of a complete wordpress custom theme.",
+    "access": "http://jamiefobertarchitects.com"
+  },
+  {
+    "id": 6,
+    "title": "Takay Photography",
+    "screenshot": "takay-photography-0.png",
+    "description": "Takay Photography is a photographers portfolio in which the art is displayed in a very unique design.",
+    "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
+    "role": "Development and deployment of a complete wordpress custom theme.",
+    "access": "http://takayphotography.com/"
+  },
+  {
+    "id": 7,
+    "title": "Tim Flach",
+    "screenshot": "tim-flach-0.png",
+    "description": "Tim Flach is a London-based photographer, artist and director, with work in several major international public collections, including the National Media Museum, UK and the Swedish Museum of Natural History. He is best known for his highly conceptual images of animals.",
+    "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
+    "role": "Development and deployment of a complete wordpress custom theme.",
+    "access": "http://timflach.com/"
+  },
+  {
+    "id": 8,
+    "title": "Haeckels",
+    "screenshot": "haeckels-0.png",
+    "description": "Haeckels is a natural fragrance and skin care brand. All their hand crafted products are formulated in their clifftop Lab in Margate where they only use and distill locally growing botanicals that offer the very best anti-oxidant properties.",
+    "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
+    "role": "Development and deployment of a complete E-Commerce solution.",
+    "access": "http://haeckels.co.uk/"
+  },
+  {
+    "id": 9,
+    "title": "Asashi Barber",
+    "screenshot": "asashi-barber-0.png",
+    "description": "Asashi is a Japanese hair stylist who originally trained in Japan. Always fascinated by both hair and high fashion, he decided to relocate to London in 1998 to launch his career as a session hair stylist.",
+    "technology": "HTML, CSS, JavaScript, AngularJS and 3rd Party API (Instagram)",
+    "role": "Developing a single page bussiness portfolio.",
+    "access": "http://asashibarber.com/"
+  },
+  {
+    "id": 10,
+    "title": "Hell Ships (by HLA)",
+    "screenshot": "hell-ships-0.png",
+    "description": "This single page applications displays a history event when Japanese began transferring POWs by sea, known as Hell Ship(s). All the details and videos were collected by HLA Team including the interviews of few of the survivors.",
+    "technology": "HTML, CSS, JavaScript and Greensock Animation Platform.",
+    "role": "Complete development and deployment on Amazon AWS Server.",
+    "access": "http://hellships.hla.net/"
+  },
+  
+  {
+    "id": 11,
+    "title": "F-Troupe",
+    "screenshot": "f-troupe-0.png",
+    "description": "F-troupe was launched in 2003 by self-taught designer Mick Hoyle and has built up a loyal following around the world. The London-based footwear label is loved for its original and off-beat designs that span from androgynous brogues to cute sandals to tomboy boots.",
+    "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
+    "role": "Development and deployment of a complete E-Commerce solution.",
+    "access": "http://f-troupe.com/"
+  },
+  {
+    "id": 12,
+    "title": "Takumi",
+    "screenshot": "takumi-0.png",
+    "description": "TAKUMI.LA is an online space showcasing some very special and unique things from all around the world. In this world of mass-consumption that we live in, Takumi (meaning “artisan” in Japanese) takes pride in its beautiful products being designed and crafted in a bespoke way, each with its own history and story.",
+    "technology": "Wordpress, PHP, HTML, CSS, JavaScript, HTML5 Canvas and Three.js (3D animation library).",
+    "role": "Development and deployment of a complete E-Commerce solution.",
+    "access": "http://takumi.la/"
+  },
+  {
+    "id": 13,
+    "title": "Magenta",
+    "screenshot": "magenta-0.png",
+    "description": "Magenta is a London-based experienced team that manages the entire development, from the initial property search, to financial planning and creatively detailed interior design, through to the final sale or rental. They have 18+ years experience and have developed over 50 projects.",
+    "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
+    "role": "Development and deployment of a complete wordpress custom theme.",
+    "access": "http://magenta.co/"
+  }
+]

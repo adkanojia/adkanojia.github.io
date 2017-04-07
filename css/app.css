@@ -1,0 +1,517 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Roboto:400,700');
+
+html, body {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+}
+
+.site-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.site-container canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.section {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	padding-top: 100px;
+	overflow-x: hidden;
+	box-sizing: border-box;
+}
+
+/* Logo */
+.logo-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	padding-top: 23px;
+	padding-bottom: 23px;
+	background-color: rgba(0, 0, 0, 0.3);
+	font-size: 0;
+	z-index: 1;
+}
+.logo-container img {
+	width: 180px;	
+	opacity: 1;
+	transition: opacity .25s linear;
+}
+.logo-container.behind img{
+	opacity: 0;	
+}
+/* Logo */
+
+/* Misc */
+	a.hamburger { position: relative; display: block; width: 30px; height: 25px; }
+	a.hamburger span { position: absolute; left: 0; width: 100%; background: #fff; height: 3px; transition: .3s linear all; }
+	a.hamburger span:nth-child(1){ top: 0; }
+	a.hamburger span:nth-child(2){ top: 11px; }
+	a.hamburger span:nth-child(3){ top: 22px; }
+	a.hamburger.open span:nth-child(1){ transform: rotate(45deg); top: 11px; }
+	a.hamburger.open span:nth-child(2){ transform: rotate(45deg); }
+	a.hamburger.open span:nth-child(3){ transform: rotate(135deg); top: 11px; }
+
+	/* ityped cursor */
+		.ityped-cursor {
+		    font-size: 2.2rem;
+		    opacity: 1;
+		    -webkit-animation: blink 0.3s infinite;
+		    -moz-animation: blink 0.3s infinite;
+		    animation: blink 0.3s infinite;
+		    animation-direction: alternate;
+		}
+		@keyframes blink {
+		    100% {
+		        opacity: 0;
+		    }
+		}
+
+		@-webkit-keyframes blink {
+		    100% {
+		        opacity: 0;
+		    }
+		}
+
+		@-moz-keyframes blink {
+		    100% {
+		        opacity: 0;
+		    }
+		}
+	/* ityped cursor */
+
+/* Misc */
+
+/* Navigation */
+	.nav-icon {
+		position: absolute;
+		padding: 15px;
+		top: 0;
+		left: 0;
+		margin-top: 15px;
+		transition: left 0.3s linear;
+		z-index: 2;
+	}
+	.nav-icon.open { left: 180px; }
+
+	.nav-container {
+		position: absolute;
+		width: 180px;
+		height: 100%;
+		top: 0;
+		left: -180px;
+		overflow-y: auto;
+		background-color: rgba(0, 0, 0, 1);
+		border-right: 1px solid #aeaeae;
+		z-index: 2;
+	}
+	.nav-container.transition { transition: left 0.3s linear; }
+	.nav-container.open { left: 0; }
+
+	.nav li {
+		vertical-align: middle;
+		padding: 10px 0 10px 10px;
+		border-bottom: 1px solid #aeaeae;
+	}
+	.nav li a {
+		color: #fff;
+		text-decoration: none;
+		font-size: 16px;
+		font-family: 'Montserrat', sans-serif;
+	}
+/* Navigation */
+
+/* Main Section */
+	/* Greeting Text */
+		.greeting-text {
+			position: absolute;
+			width: 100%;
+			margin: 0 auto;
+			padding: 15px;
+			color: #fff;
+			font-family: 'Montserrat', sans-serif;
+			text-align: center;
+			bottom: 50px;
+			box-sizing: border-box;
+		}
+		.greeting-text h4 { font-size: 24px; margin-bottom: 8px; }
+		.greeting-text h2 { font-size: 36px; margin-bottom: 8px; }
+		.greeting-text h3 { font-size: 30px; }
+		.greeting-text .job { font-weight: 600; }
+	/* Greeting Text */
+
+	/* Social Nav */
+		.social-nav {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			padding: 15px;
+			text-align: center;
+			width: 100%;
+			box-sizing: border-box;	
+		}
+		.social-nav:before {
+			content: '';
+			display: inline-block;
+			height: 100%;
+			vertical-align: middle;
+		}
+		.social-nav-inner {
+			display: inline-block;
+			vertical-align: middle;
+		}
+		.social-nav-inner .social-icon {
+			display: inline-block;
+			margin: 0 5px;
+			width: 36px;
+			height: 36px;
+		}
+		.social-nav-inner .social-icon a {
+			position: relative;
+			display: block;
+			line-height: 36px;
+			width: 100%;
+			text-align: center;
+			background-color: transparent;
+			color: #000000;
+			font-size: 1.5em;
+			text-shadow:
+				-1px -1px 0 #ffffff,  
+				1px -1px 0 #ffffff,
+				-1px 1px 0 #ffffff,
+				1px 1px 0 #ffffff;
+			transition: all .2s linear;
+		}
+		.social-nav-inner .social-icon a:hover {
+			color: #ffffff;
+			background-color: #ffffff;
+			text-shadow:
+				-1px -1px 0 #000000,  
+				1px -1px 0 #000000,
+				-1px 1px 0 #000000,
+				1px 1px 0 #000000;
+			transition-delay: .2s;
+		}
+		.border-square { position: absolute; width: 100%; height: 100%; display: block; top: 0; left: 0; overflow: hidden; }
+		.border-square .animated-border { background-color: #fff; position: absolute; transition: all .2s linear; }
+		.border-square .animated-border.top,
+		.border-square .animated-border.bottom { height: 1px; width: 100%; }
+		.border-square .animated-border.left,
+		.border-square .animated-border.right { height: 100%; width: 1px; }
+		.border-square .animated-border.top { top: 0; left: 100%; }
+		.border-square .animated-border.bottom { left: -100%; bottom: 0; }
+		.border-square .animated-border.right { top: 100%; right: 0; }
+		.border-square .animated-border.left { top: -100%; left: 0; }
+		.border-square:hover .animated-border.top,
+		.border-square:hover .animated-border.bottom { left: 0; }
+		.border-square:hover .animated-border.left,
+		.border-square:hover .animated-border.right { top: 0; }
+	/* Social Nav */
+/* Main Section */
+
+/* Works Section */
+	/* Works Listing */
+		.works-listing {
+			position: relative;
+			width: 100%;
+			height: 100%;
+		}
+		.works-listing .listing-title {
+			text-align: center;
+			font-size: 20px;
+			text-transform: uppercase;
+			color: #fff;
+		}
+		.works-listing .works-list-outer {
+			display: block;
+			margin: 0 auto;
+			position: relative;
+			left: 0;
+			top: 0;
+			padding: 15px 7.5px;
+		}
+		.works-listing .works-list {
+			display: block;
+			font-size: 0;
+		}
+		.works-listing .works-list:after {
+			content: '';
+			display: block;
+			clear: both;
+		}
+		.works-listing .works-list li {
+			display: inline-block;
+			width: 100%;
+			margin-bottom: 15px;
+			padding: 0 7.5px;
+			box-sizing: border-box;
+		}
+		.works-listing .works-list li:last-child {
+			padding-bottom: 10px;
+		}
+		.works-listing .works-list li .thumb-container {
+			position: relative;
+			text-align: center;
+			font: 0/0 'Montserrat';
+		}
+		.works-listing .works-list li .thumb-container img {
+			position: relative;
+			width: 100%;
+			height: auto;
+		}
+		.works-listing .works-list li .thumb-container .thumb-title {
+			position: absolute;
+			display: block;
+			width: 100%;
+			height: 100%;
+			left: 0;
+			top: 0;
+			padding: 10px;
+			box-sizing: border-box;
+			opacity: 0;
+			background: rgba(0, 0, 0, 0.7);
+			transition: 0.2s linear opacity;
+		}
+		.works-listing .works-list li .thumb-container:hover .thumb-title {
+			opacity: 1;
+		}
+		.works-listing .works-list li .thumb-container .thumb-title:before {
+			content: ' ';
+			font-size: 0;
+			display: inline-block;
+			vertical-align: middle;
+			height: 100%;
+		}
+		.works-listing .works-list li .thumb-container .thumb-title p {
+			position: relative;
+			display: inline-block;
+			vertical-align: middle;
+			color: #fff;
+			font: 16px 'Montserrat';
+		}
+	/* Works Listing */
+
+	/* Work Preview */
+		.work-preview {
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			top: 0;
+			left: 0;
+			text-align: center;
+			padding-top: 100px;
+			box-sizing: border-box;
+			font: 0/0 'Montserrat', sans-serif;
+		}
+		
+		.work-preview .close-preview {
+			position: fixed;
+			top: 0;
+			right: 0;
+			margin-top: 15px;
+			padding: 15px;
+			z-index: 2;
+		}
+		.work-preview .single-preview {
+			display: none;
+		}
+		.work-preview .centered-container {
+			font-size: 0;
+			width: 100%;
+			padding: 15px;
+			box-sizing: border-box;
+			margin: 0 auto;
+		}
+
+		.work-preview .centered-container .image {
+			margin-bottom: 15px;
+		}
+		.work-preview .centered-container .image img {
+			width: 100%;
+			height: auto;
+		}
+		
+		.work-preview .centered-container .info {
+			font: 16px/1 'Montserrat', sans-serif;
+			color: #fff;
+			text-align: left;
+		}
+		.work-preview .centered-container .info .title {
+			font-size: 30px;
+			margin-bottom: 10px;
+		}
+		.work-preview .centered-container .info .description {
+			font-size: 16px;
+			font-weight: 300;
+			line-height: 20px;
+			margin-bottom: 10px;
+		}
+		.work-preview .centered-container .info .detail {
+			margin-bottom: 10px;
+		}
+		.work-preview .centered-container .info .detail .detail-title {
+			font-size: 18px;
+			font-weight: 400;
+			margin-bottom: 5px;
+		}
+		.work-preview .centered-container .info .detail .detail-description {
+			font-size: 16px;
+			font-weight: 300;
+			line-height: 20px;
+		}
+		.work-preview .centered-container .info .access a {
+			font-size: 16px;
+			text-decoration: none;
+			color: #fff;
+		}
+		.work-preview .centered-container .info .access a .project-link-dash {
+			position: relative;
+			bottom: 5px;
+			margin-right: 10px;
+			display: inline-block;
+			height: 1px;
+			width: 30px;
+			background-color: #fff;
+		}
+	/* Work Preview */
+/* Works Section */
+
+/*.main {display: none;}*/
+.works {display: none;}
+/*.works-listing {display: none;}*/
+.work-preview {display: none;}
+
+@media only screen and (min-width: 568px){
+	/* Logo */
+		.logo-container {
+			padding-top: 15px;
+			padding-bottom: 15px;
+		}
+		.logo-container img {
+			width: 260px;
+		}
+	/* Logo */
+
+	/* Works Section */
+		.works-listing .works-list li {
+			width: 50%;
+		}
+	/* Works Section */
+}
+
+@media only screen and (min-width: 700px){
+	.logo-container.behind img {
+		opacity: 1;
+	}
+}
+
+@media only screen and (min-width: 767px){
+	/* Navigation */
+		.nav-icon.open { left: 0; }
+		.nav-container {
+			padding: 10px;
+			width: auto;
+			height: auto;
+			background-color: transparent;
+			border-right: none;
+			left: 0px;
+			opacity: 0;
+			margin-top: 15px;
+			visibility: hidden;
+		}
+		.nav-container.transition { transition: left 0.5s, opacity 0.5s, visibility 0.5s linear; }
+		.nav-container.open {
+			left: 60px;
+			opacity: 1;
+			visibility: visible;
+		}
+		.nav li {
+			display: inline-block;
+			border-bottom: none;
+			padding: 10px 10px 10px 0;
+		}
+	/* Navigation */
+	
+	/* Greeting Text */
+		.greeting-text {
+			bottom: 0;
+			margin: 0;
+			width: auto;
+			text-align: left;
+		}
+	/* Greeting Text */
+
+	/* Social Nav */
+		.social-nav {
+			width: auto;
+			height: 100%;
+			left: auto;
+			right: 0;
+		}
+		.social-nav-inner .social-icon {
+			display: block;
+			margin: 10px 0;
+			width: 48px;
+			height: 48px;
+		}
+		.social-nav-inner .social-icon a {
+			line-height: 48px;
+		}
+	/* Social Nav */
+
+	/* Works Section */
+		/* Work Preview */
+			.work-preview:before {
+				content: '';
+				display: inline-block;
+				vertical-align: middle;
+				height: 100%;
+			}
+
+			.work-preview .centered-container {
+				display: inline-block;
+				vertical-align: middle;
+				width: 80%;
+				max-width: 1200px;
+			}
+		/* Work Preview */
+	/* Works Section */
+}
+
+@media only screen and (min-width: 1024px){
+	/* Works Section */
+		/* Works Listing */
+			.works-listing .works-list-outer {
+				width: 80%;
+			}
+			.works-listing .works-list li {
+				width: 25%;
+			}
+		/* Works Listing */
+		
+		/* Work Preview */
+			.work-preview .centered-container .image {
+				display: inline-block;
+				vertical-align: top;
+				width: 70%;
+				padding-right: 15px;
+				box-sizing: border-box;
+			}
+			.work-preview .centered-container .info {
+				display: inline-block;
+				vertical-align: top;
+				width: 30%;
+			}
+		/* Work Preview */
+	/* Works Section */
+}

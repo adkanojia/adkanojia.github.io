@@ -1,33 +1,197 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Coming Soon!</title>
-	<style>
-		html, body, .page {
-			width: 100%;
-			height: 100%;
-		}
-		.page {
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			align-items: center;
-			justify-content: center;
-		}
-		.page-inner {
-			text-align: center;
-			flex-basis: 100%;
+<html>
+  <head>
+    <title>AkashDeep.me</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1">
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="css/reset.min.css">
+    <link rel="stylesheet" href="vendor/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/app.css">
+  </head>
+  <body>
+    <div class="site-container" id="site-container">
+      <!-- Nav Icon -->
+      <div class="nav-icon">
+        <a href="#" class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </a>
+      </div>
 
-		}
-	</style>
-</head>
-<body>
-	<div class="page">
-		<div class="page-inner">
-			<h2>Coming Soon!</h2>
-			<p>This website is under construction.</p>
-		</div>
-	</div>
-</body>
+      <!-- Navigation -->
+      <div class="nav-container">
+          <ul class="nav">
+            <li><a href="#main">Home</a></li>
+            <li><a href="#works">Works</a></li>
+            <!-- <li><a href="#contact">Contact</a></li> -->
+          </ul>
+      </div>
+
+      <!-- Logo -->
+      <div class="logo-container">
+        <img src="images/akashdeep_me.png" alt="akashdeep.me">
+      </div>
+
+      <!-- Main Section -->
+      <div class="section main" id="main">
+        
+        <!-- Greeting Text -->
+        <div class="greeting-text">
+          <h4>Hi, I am</h4>
+          <h2>Akash D. Kanojia</h2>
+          <h3>I am a <span class="job"></span></h3>
+        </div>
+
+        <!-- Social Icons -->
+        <div class="social-nav">
+          <div class="social-nav-inner">
+            <div class="social-icon facebook">
+              <a href="https://www.facebook.com/adkanojia" target="_blank" title="Facebook">
+                <div class="border-square">
+                  <span class="animated-border top"></span>
+                  <span class="animated-border left"></span>
+                  <span class="animated-border bottom"></span>
+                  <span class="animated-border right"></span>
+                </div>
+                <i class="fa fa-facebook"></i>
+              </a>
+            </div>
+            <div class="social-icon twitter">
+              <a href="https://twitter.com/livelyakki" target="_blank" title="Twitter">
+                <div class="border-square">
+                  <span class="animated-border top"></span>
+                  <span class="animated-border left"></span>
+                  <span class="animated-border bottom"></span>
+                  <span class="animated-border right"></span>
+                </div>
+                <i class="fa fa-twitter"></i>
+              </a>
+            </div>
+            <div class="social-icon instagram">
+              <a href="https://www.instagram.com/adkanojia/" target="_blank" title="Instagram">
+                <div class="border-square">
+                  <span class="animated-border top"></span>
+                  <span class="animated-border left"></span>
+                  <span class="animated-border bottom"></span>
+                  <span class="animated-border right"></span>
+                </div>
+                <i class="fa fa-instagram"></i>
+              </a>
+            </div>
+            <div class="social-icon email">
+              <a href="mailto:akashdeepkanojia@gmail.com" target="_blank" title="E-mail">
+                <div class="border-square">
+                  <span class="animated-border top"></span>
+                  <span class="animated-border left"></span>
+                  <span class="animated-border bottom"></span>
+                  <span class="animated-border right"></span>
+                </div>
+                <i class="fa fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Works Section -->
+      <div class="section works" id="works">
+
+        <!-- Works Listing -->
+        <div class="works-listing">
+          <div class="listing-title">My Projects</div>
+          
+          <div class="works-list-outer">
+            <ul class="works-list">
+              
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Work Preview -->
+        <div class="work-preview">
+          <div class="single-preview centered-container">
+            <div class="image">
+              <img src="images/works/hla-0.png" alt="HLA - (Helen Langridge Associates)">
+            </div>
+
+            <div class="info">
+              <h2 class="title">HLA - (Helen Langridge Associates)</h2>
+              <p class="description">Helen Langridge Associates is one of the most acclaimed, respected and successful production companies in the UK. The website showcases all the works of the company by different directors.</p>
+              
+              <div class="detail">
+                <p class="detail-title">Technology: </p>
+                <p class="detail-description">Wordpress, PHP, HTML, CSS and JavaScript.</p>
+              </div>
+              <div class="detail">
+                <p class="detail-title">Role: </p>
+                <p class="detail-description">Development and deployment of a complete wordpress custom theme.</p>
+              </div>
+              <div class="access">
+                <a href="http://hla.net" target="_blank"><span class="project-link-dash"></span>Access</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="close-preview">
+            <a href="#" class="hamburger open">
+              <span></span>
+              <span></span>
+              <span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script id="works-list" type="text/template">
+      {{#projects}}
+        <li>
+          <a href="#" data-project-id="{{id}}">
+            <div class="thumb-container">
+              <img src="images/works/{{screenshot}}" alt="{{title}}">
+              <div class="thumb-title">
+                <p>{{title}}</p>
+              </div>
+            </div>
+          </a>
+        </li>
+      {{/projects}}
+    </script>
+
+    <script id="preview-template" type="text/template">
+      {{#projects}}
+        <div class="single-preview centered-container" data-project-id="{{id}}">
+          <div class="image">
+            <img src="images/works/{{screenshot}}" alt="{{title}}">
+          </div>
+
+          <div class="info">
+            <h2 class="title">{{title}}</h2>
+            <p class="description">{{description}}</p>
+            
+            <div class="detail">
+              <p class="detail-title">Technology: </p>
+              <p class="detail-description">{{technology}}</p>
+            </div>
+            <div class="detail">
+              <p class="detail-title">Role: </p>
+              <p class="detail-description">{{role}}</p>
+            </div>
+            <div class="access">
+              <a href="{{access}}" target="_blank"><span class="project-link-dash"></span>Access</a>
+            </div>
+          </div>
+        </div>
+      {{/projects}}
+    </script>
+  
+    <script src="js/libs/jquery-2.2.4.min.js"></script>
+    <script src="js/libs/three.min.js"></script>
+    <script src="js/libs/orbit-controls.js"></script>
+    <script src="js/libs/ityped.min.js"></script>
+    <script src="js/libs/mustache.min.js"></script>
+
+    <script src="js/app.js"></script>
+  </body>
 </html>
