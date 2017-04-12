@@ -113,6 +113,7 @@ html, body {
 		overflow-y: auto;
 		background-color: rgba(0, 0, 0, 1);
 		border-right: 1px solid #aeaeae;
+		box-sizing: border-box;
 		z-index: 2;
 	}
 	.nav-container.transition { transition: left 0.3s linear; }
