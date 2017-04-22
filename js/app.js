@@ -122,8 +122,7 @@ let Animation = function(){
   self.aspect = self.window_width / self.window_height;
   
   self.circles = new Array();
-  self.particles = new Array();
-
+  
   self.setupEnvironment();
 
   self.onResize();
@@ -268,10 +267,6 @@ function render(){
   }
   if( anim.circles.length ){
     anim.animateCircles();
-  }
-
-  if( anim.particles.length ){
-    anim.animateParticles();
   }
   anim.renderer.render( anim.scene, anim.camera );
   requestAnimationFrame( render );

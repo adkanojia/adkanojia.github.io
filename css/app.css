@@ -232,6 +232,7 @@ html, body {
 			font-size: 20px;
 			text-transform: uppercase;
 			color: #fff;
+			font-family: 'Montserrat', sans-serif;
 		}
 		.works-listing .works-list-outer {
 			display: block;

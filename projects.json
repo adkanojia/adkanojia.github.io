@@ -116,5 +116,50 @@
     "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
     "role": "Development and deployment of a complete wordpress custom theme.",
     "access": "http://magenta.co/"
+  },
+  {
+    "id": 14,
+    "title": "Fujita Makoto Design",
+    "screenshot": "fujita-makoto-design-0.png",
+    "description": "",
+    "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
+    "role": "Development and deployment of a complete wordpress custom theme.",
+    "access": "http://fujitamakotodesign.jp/"
+  },
+  {
+    "id": 15,
+    "title": "Miki Yamaguchi",
+    "screenshot": "miki-yamaguchi-0.png",
+    "description": "Born and raised in Tokyo, Japan, Miki is one of the top facialists who has earned a global reputation for high quality anti-ageing facials using the Japanese 3D facelift massage technique.",
+    "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
+    "role": "Development and deployment of a complete wordpress custom theme.",
+    "access": "http://mikiyamaguchi.com/"
+  },
+  {
+    "id": 16,
+    "title": "Daidouseiki",
+    "screenshot": "daidouseiki-0.png",
+    "description": "",
+    "technology": "Wordpress, PHP, HTML, CSS, JavaScript, HTML5 Canvas and Three.js (3D animation library).",
+    "role": "Development and deployment of a complete wordpress custom theme.",
+    "access": "http://daidouseiki.com/"
+  },
+  {
+    "id": 17,
+    "title": "Huntsmore",
+    "screenshot": "huntsmore-0.png",
+    "description": "Huntsmore is a property Project Management firm based in West London. They offer a complete Design & Build service for people who want to renovate, extend or upgrade their home.",
+    "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
+    "role": "Development and deployment of a complete wordpress custom theme.",
+    "access": "http://huntsmore.com/"
+  },
+  {
+    "id": 18,
+    "title": "The Post Office",
+    "screenshot": "the-post-office-0.png",
+    "description": "ThePostOffice.jp is an online portal representing a shop handled by musicians who were active in the UK in the 1990s and directors who had been involved in the apparel industry in London for many years.",
+    "technology": "Shopify, HTML, CSS and Javascript.",
+    "role": "Shopify theme customization.",
+    "access": "https://thepostoffice.jp/"
   }
 ]
