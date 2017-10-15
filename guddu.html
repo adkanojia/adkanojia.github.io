@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Happy Birthday Guddu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/pixi.js/4.3.5/pixi.min.js"></script>
+    <script src="js/libs/jquery-2.2.4.min.js"></script>
+    <style>
+      html, body {
+        overflow: hidden;
+        margin: 0;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+        margin: 0 auto;
+        border: 1px solid black;
+        box-sizing: border-box;
+      }
+      .mobile-message {
+      	display: none;
+      	position: absolute;
+      	left: 0;
+      	top: 0;
+      	width: 100%;
+      	height: 100%;
+      	font-size: 0;
+      	line-height: 0;
+      	background-color: rgba(0, 0, 0, 1);
+      	z-index: 1;
+      }
+      .mobile-message:before {
+      	content: '';
+      	height: 100%;
+      	display: inline-block;
+      	vertical-align: middle;
+      }
+      .mobile-message .centered-text {
+      	display: inline-block;
+      	vertical-align: middle;
+      	width: 100%;
+      	text-align: center;
+      	font-size: 20px;
+      	line-height: 24px;
+      	color: #fff;
+      }
+      #modal {
+        display: block;
+        background-color: black;
+        border: 1px solid white;
+        position: absolute;
+        z-index: 10;
+        top: 50%;
+        margin-top: -75px;
+        left: 50%;
+        margin-left: -250px;
+        height: 150px;
+        width: 500px;
+        color: white;
+        text-align: center;
+      }
+      #submit {
+        z-index: 11;
+        background-color: white;
+        display: block;
+        margin: 0 auto;
+        padding: 5px 20px;
+        font-size: 20px;
+      }
+      @media only screen and ( max-width: 1023px ){
+      	.mobile-message { display: block; }
+      	canvas { display: none; }
+        #modal { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+
+  <div class="mobile-message">
+    <div class="centered-text">
+      Please view this site on a desktop computer.
+    </div>
+  </div>
+  <div id="modal">
+    <h2>Click the circles to get your message.</h2>
+    <button id="submit" onclick="removeModal()">OK!</button>
+  </div>
+  </body>
+  <script>
+    function getParameterByName(name, url) {
+      if (!url) url = window.location.href;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    var selectedColor = getParameterByName('color');
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    }
+    if( selectedColor ){
+      selectedColor = capitalizeFirstLetter(selectedColor);
+    }
+
+    var Easing = {
+      /* t: current time, b: begInnIng value, c: change In value, d: duration */
+      linear: function(t, b, c, d){
+        return (c / d * t) + b;
+      },
+      easeInOutQuad: function (t, b, c, d) {
+        if ((t/=d/2) < 1) return c/2*t*t + b;
+        return -c/2 * ((--t)*(t-2) - 1) + b;
+      },
+      easeInOutElastic: function(t, b, c, d) {
+        var s=1.70158;var p=0;var a=c;
+        if (t==0) return b;  if ((t/=d/2)==2) return b+c;  if (!p) p=d*(.3*1.5);
+        if (a < Math.abs(c)) { a=c; var s=p/4; }
+        else var s = p/(2*Math.PI) * Math.asin (c/a);
+        if (t < 1) return -.5*(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+        return a*Math.pow(2,-10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )*.5 + c + b;
+      },
+      easeInOutCubic: function(t, b, c, d) {
+        if ((t/=d/2) < 1) return c/2*t*t*t + b;
+        return c/2*((t-=2)*t*t + 2) + b;
+      }
+    };
+    var stage, renderer, anim;
+    var size = [1920, 1080];
+    var aspect_ratio = size[0] / size[1];
+
+    var letterStructure = [
+      {
+        alphabet: 'H',
+        width: 16,
+        height: 24,
+        bubbles: {
+          small: [
+            [0, 0], [0, 1], [0, 2], [0, 3],
+            [1, 0], [1, 1], [1, 2], [1, 3],
+            [4, 4], [4, 5], [5, 4], [5, 5],
+            [0, 8], [0, 9], [1, 8], [1, 9],
+            [4, 8], [4, 9], [5, 8], [5, 9],
+            [0, 10], [0, 11], [0, 12], [0, 13],
+            [1, 10], [1, 11], [1, 12], [1, 13],
+            [2, 14], [2, 15], [3, 14], [3, 15],
+            [0, 18], [0, 19], [1, 18], [1, 19],
+            [4, 20], [4, 21], [4, 22], [4, 23],
+            [5, 20], [5, 21], [5, 22], [5, 23],
+
+            [6, 11], [7, 11], [8, 13], [9, 13],
+            [15, 0], [15, 1], [14, 0], [14, 1],
+            [14, 4], [14, 5], [15, 4], [15, 5],
+            [10, 6], [10, 7], [11, 6], [11, 7], [10, 8], [11, 8],
+            [12, 14], [13, 14], [14, 14], [15, 14],
+            [10, 15], [10, 16],
+            [11, 15], [11, 16], [10, 19], [11, 19],
+            [12, 21], [12, 22], [12, 23],
+            [13, 21], [14, 21], [15, 21], [13, 22], [13, 23]
+          ],
+          medium: [
+            [2, 0], [2, 2], [4, 0], [4, 2],
+            [4, 6], [2, 8], [0, 14], [4, 14],
+            [0, 16], [0, 20],
+            [0, 22], [2, 20], [2, 22],
+
+            [6, 9], [6, 12], [10, 13], [10, 4], [12, 4], [14, 2],
+            [12, 10], [12, 12], [14, 10], [14, 12], [10, 17], [12, 19], [14, 19],
+            [10, 20], [10, 22], [14, 22],
+          ],
+          large: [
+            [0, 4],
+            [2, 10],
+            [2, 16],
+
+            [8, 9], [10, 0], [12, 6], [12, 15],
+          ]
+        },
+        space_right: 2,
+        space_bottom: 2
+      },
+      {
+        alphabet: 'A',
+        width: 16,
+        height: 24,
+        bubbles: {
+          small: [
+            [0, 2], [0, 3], [1, 2], [2, 1],
+            [0, 8], [0, 9], [1, 3], [1, 8], [1, 9], [1, 20],
+            [3, 1], [3, 22], [4, 2], [4, 3], [4, 10], [4, 11], [4, 12], [4, 13], [4, 16], [4, 17],
+            [5, 2], [5, 3], [5, 10], [5, 11], [5, 12], [5, 13], [5, 16], [5, 17],
+            // [6, 0], [6, 1], [6, 6], [6, 7], [6, 8], [6, 9], [6, 10], [6, 11], [6, 12], [6, 13], [6, 14], [6, 15], [6, 16], [6, 17],
+            // [7, 0], [7, 1],
+            [6, 9], [6, 10], [7, 9], [7, 10],
+            [8, 11], [8, 12], [9, 11], [9, 12],
+            [8, 20], [8, 21], [8, 22], [8, 23],
+            // [9, 6], [9, 7], [9, 8], [9, 9], [9, 10], [9, 11], [9, 12], [9, 13], [9, 14], [9, 15], [9, 16], [9, 17],
+            [9, 20], [9, 21], [9, 22], [9, 23],
+            [10, 0], [10, 1], [10, 2], [10, 3], [11, 0], [11, 1], [11, 2], [11, 3], [13, 1],
+
+            [10, 14], [10, 15], [11, 14], [11, 15],
+            [12, 1], [12, 22],  [14, 4], [14, 5], [14, 12], [14, 13], [14, 20],
+            [15, 4], [15, 5], [15, 12], [15, 13]
+          ],
+          medium: [
+            [0, 0],
+            [0, 10], [0, 12], [0, 14], [2, 2], [2, 8], [2, 10], [2, 12], [2, 14], [2, 20],
+            [4, 0], [4, 4], [4, 6], [4, 8], [4, 14], [4, 18],
+            // [6, 2], [6, 4] [8, 4],
+            [6, 11], [8, 9],
+            [6, 18], [8, 18],
+            [10, 4], [10, 6], [10, 8], [10, 10], [10, 12], [10, 16], [10, 18], [10, 20], [10, 22],
+            [12, 2], [12, 4], [12, 6], [12, 12], [12, 14], [12, 20],
+            [14, 0], [14, 2], [14, 6], [14, 14]
+          ],
+          large: [
+            [0, 4], [0, 16], [4, 20], [12, 8], [12, 16]
+          ]
+        },
+        space_right: 2,
+        space_bottom: 2
+      },
+      {
+        alphabet: 'P',
+        width: 16,
+        height: 24,
+        bubbles: {
+          small: [
+            [0, 0], [0, 1], [0, 22], [0, 23],
+            [1, 0], [1, 1], [1, 22], [1, 23],
+            [4, 6], [4, 7], [4, 8], [4, 9],
+            [5, 6], [5, 7], [5, 8], [5, 9], [6, 8], [6, 9], [7, 9],
+
+            [9, 14], [9, 17],
+            [10, 22], [11, 22], [12, 11], [12, 20], [12, 21]
+          ],
+          medium: [
+            [0, 2], [0, 20], [2, 0], [2, 2], [2, 20], [2, 22],
+            [4, 0], [4, 2], [4, 4], [4, 10], [4, 12], [4, 14], [4, 16], [4, 18],
+            [6, 10], [6, 12], [6, 18],
+            [8, 12], [8, 18], [8, 20], [8, 22],
+            [10, 12], [10, 14], [10, 16], [10, 18], [10, 20],
+          ],
+          large: [
+            [0, 4], [0, 8], [0, 12], [0, 16],
+            [4, 20], [8, 8], [12, 12], [12, 16]
+          ]
+        },
+        space_right: 2,
+        space_bottom: 2
+      },
+      {
+        alphabet: 'Y',
+        width: 16,
+        height: 24,
+        bubbles: {
+          small: [
+            [0, 4], [1, 4], [1, 5],
+            [3, 8], [3, 9],
+            [4, 2], [4, 3], [5, 2], [5, 3], [4, 4], [4, 5], [5, 4], [5, 5],
+            [6, 4], [6, 5], [7, 5],
+            [8, 7],
+            [9, 16],
+            [11, 21],
+            [1, 17], [3, 15],
+            [4, 22], [6, 20],  [11, 18], [11, 19], [11, 20],
+            [12, 12], [12, 13],
+            [14, 15],
+
+            [14, 22], [14, 23], [15, 22], [15, 23]
+          ],
+          medium: [
+            [2, 4], [2, 6],
+            [4, 0], [4, 6], [4, 8], [4, 10], [6, 6],
+            [0, 18], [2, 16], [2, 18],
+            [4, 20],
+            [10, 10], [8, 12], [8, 14], [10, 12], [10, 14], [10, 16],
+            [12, 14], [12, 20], [12, 22], [14, 20]
+          ],
+          large: [
+            [0, 0],
+            [0, 20],
+            [4, 12], [4, 16], [6, 8], [12, 16]
+          ]
+        },
+        space_right: 2,
+        space_bottom: 2
+      },
+      {
+        alphabet: 'B',
+        width: 16,
+        height: 24,
+        bubbles: {
+          small: [
+            [0, 8], [0, 9], [0, 10], [0, 11], [1, 8], [1, 9], [1, 10], [1, 11],
+            [2, 8], [2, 9], [3, 8], [3, 9],
+            [4, 0], [4, 1], [4, 12], [4, 13], [4, 14], [4, 15], [4, 22], [4, 23],
+            [5, 0], [5, 1], [5, 12], [5, 13], [5, 14], [5, 15], [5, 22], [5, 23],
+            [6, 9], [7, 9], [8, 8], [8, 9], [9, 6], [9, 7], [9, 8], [9, 9], [9, 16], [9, 17],
+            [10, 18], [10, 19], [11, 18], [11, 19], [12, 1], [12, 13]
+          ],
+          medium: [
+            [0, 12], [0, 14], [2, 10], [2, 12], [2, 14],
+            [4, 2], [4, 4], [4, 6], [4, 8], [4, 10], [4, 16], [4, 18], [4, 20],
+            [6, 0], [6, 2], [6, 4], [6, 10], [6, 18], [6, 20], [6, 22],
+            [8, 0], [8, 2], [8, 4], [8, 10], [8, 12], [8, 14], [8, 18],
+            [10, 0], [10, 2], [10, 4], [10, 6], [10, 8], [10, 10], [10, 12], [10, 14], [10, 16],
+            [12, 2], [12, 14], [12, 20]
+          ],
+          large: [
+            [0, 0], [0, 4], [0, 16], [0, 20],
+            [8, 20], [12, 4], [12, 8], [12, 16]
+          ]
+        },
+        space_right: 2,
+        space_bottom: 2
+      },
+      {
+        alphabet: 'I',
+        width: 16,
+        height: 24,
+        bubbles: {
+          small: [
+            [0, 0], [0, 1], [0, 2], [0, 3], [0, 18], [0, 19], [0, 20], [0, 21],
+            [1, 0], [1, 1], [1, 2], [1, 3], [1, 18], [1, 19], [1, 20], [1, 21],
+            [2, 20], [2, 21], [3, 20], [3, 21],
+            [9, 6], [9, 7], [9, 8], [9, 9], [9, 16], [9, 17],
+            [10, 6],
+            [10, 7], [10, 8], [10, 9], [10, 16], [10, 17],
+            [7, 10], [7, 11], [8, 10], [8, 11],
+
+            [12, 0], [12, 1], [12, 4], [12, 18], [12, 19],
+            [13, 18], [13, 19],
+            [13, 0], [13, 1],
+            [12, 5], [13, 4], [13, 5],
+            [14, 4], [14, 5], [15, 4], [15, 5],
+            [2, 4], [2, 5], [3, 4], [3, 5],
+            [5, 12], [5, 13], [6, 12], [6, 13],
+          ],
+          medium: [
+            [0, 4],  [0, 22],
+            [2, 0], [2, 2],    [2, 18], [2, 22],
+            [4, 4], [4, 18],
+            [6, 4], [6, 18], [8, 4], [9, 10], [8, 18], [8, 20], [8, 22],
+            [10, 4], [10, 18], [10, 20], [10, 22],
+            [12, 2],
+            [14, 0], [14, 2],
+            [14, 18],
+            [5, 10], [5, 14], [5, 16], [7, 16],
+          ],
+          large: [
+            [4, 0],  [4, 20], [8, 0], [7, 12], [12, 20],
+            [5, 6],
+          ]
+        },
+        space_right: 2,
+        space_bottom: 2
+      },
+      {
+        alphabet: 'R',
+        width: 16,
+        height: 24,
+        bubbles: {
+          small: [
+            [0, 0], [0, 1], [0, 22], [0, 23],
+            [1, 0], [1, 1], [1, 22], [1, 23],
+            [4, 6], [4, 7], [4, 8], [4, 9],
+            [5, 9], [6, 8], [6, 9],
+            [7, 4], [7, 5], [7, 8], [7, 9],
+            [8, 2], [8, 3], [9, 2], [9, 3],
+            [10, 22], [11, 22], [12, 6], [12, 7], [12, 11], [12, 20], [12, 21]
+          ],
+          medium: [
+            [0, 2], [0, 20], [2, 0], [2, 2], [2, 20], [2, 22],
+            [4, 0], [4, 2], [4, 4], [4, 10], [4, 12], [4, 14], [4, 16], [4, 18],
+            [6, 6], [6, 10], [6, 12], [6, 18],
+            [8, 0], [8, 12], [8, 14], [8, 16], [8, 18], [8, 20], [8, 22],
+            [10, 0], [10, 2], [10, 12], [10, 14], [10, 16], [10, 18], [10, 20],
+            [12, 4]
+          ],
+          large: [
+            [0, 4], [0, 8], [0, 12], [0, 16],
+            [4, 20], [8, 4], [8, 8], [12, 0], [12, 12], [12, 16]
+          ]
+        },
+        space_right: 2,
+        space_bottom: 2
+      },
+      {
+        alphabet: 'T',
+        width: 16,
+        height: 24,
+        bubbles: {
+          small: [
+            [0, 18], [0, 19], [0, 20], [0, 21],
+            [1, 18], [1, 19], [1, 20], [1, 21],
+            [2, 20], [2, 21], [3, 20], [3, 21],
+            [9, 6], [9, 7], [9, 8], [9, 9], [9, 16], [9, 17],
+            [10, 6],
+            [10, 7], [10, 8], [10, 9], [10, 16], [10, 17],
+            [7, 10], [7, 11], [8, 10], [8, 11],
+
+            [12, 18], [12, 19],
+            [13, 18], [13, 19],
+
+
+            [5, 2], [5, 3], [6, 2], [6, 3],
+            [7, 4], [7, 5], [8, 4], [8, 5],
+            [5, 12], [5, 13], [6, 12], [6, 13],
+          ],
+          medium: [
+            [0, 22],
+            [2, 18], [2, 22],
+            [4, 18],
+            [5, 4], [6, 18], [9, 10], [8, 18], [8, 20], [8, 22],
+            [9, 4], [10, 18], [10, 20], [10, 22],
+
+            [5, 0],
+            [14, 18],
+            [5, 10], [5, 14], [5, 16], [7, 16],
+          ],
+          large: [
+            [7, 0],  [4, 20],  [7, 12], [12, 20],
+            [5, 6],
+          ]
+        },
+        space_right: 2,
+        space_bottom: 2
+      },
+      {
+        alphabet: 'D',
+        width: 16,
+        height: 24,
+        bubbles: {
+          small: [
+            [0, 0], [0, 1], [0, 2], [0, 3], [0, 18], [0, 19], [0, 20], [0, 21],
+            [1, 0], [1, 1], [1, 2], [1, 3], [1, 18], [1, 19], [1, 20], [1, 21],
+            [2, 20], [2, 21], [3, 20], [3, 21],
+            [4, 6], [4, 7], [4, 8], [4, 9], [4, 16], [4, 17],
+            [5, 6], [5, 7], [5, 8], [5, 9], [5, 16], [5, 17],
+
+            [12, 1], [12, 22],
+
+            [4, 12], [4, 13], [5, 12], [5, 13], [14, 20],
+            [9, 17],
+            [9, 6],
+            [10, 6], [10, 7], [11, 6], [11, 7],
+            [10, 14], [10, 15], [11, 14], [11, 15],
+            [14, 3], [14, 4], [14, 5], [15, 5],
+            [14, 12], [14, 13], [15, 12], [15, 13],
+          ],
+          medium: [
+            [0, 8], [0, 10], [0, 16], [0, 22],
+            [2, 0], [2, 2], [2, 8], [2, 10], [2, 16], [2, 18], [2, 22],
+            [4, 4], [4, 10], [4, 18],
+            [6, 4], [6, 18], [8, 4], [8, 18], [8, 20], [8, 22],
+            [10, 4], [10, 18], [10, 20], [10, 22],
+            [12, 2], [12, 4], [12, 6], [14, 6], [12, 20],
+            [4, 14], [10, 16], [10, 8], [10, 12], [10, 10],
+            [12, 12], [12, 14], [14, 14],
+          ],
+          large: [
+            [0, 4], [0, 12], [4, 0], [4, 20], [8, 0],
+            [12, 16], [12, 8],
+          ]
+        },
+        space_right: 2,
+        space_bottom: 2
+      },
+      {
+        alphabet: 'G',
+        width: 16,
+        height: 24,
+        bubbles: {
+          small: [
+            [0, 18],
+            [1, 3], [1, 18], [1, 19],
+            [2, 20], [3, 20], [3, 21],
+            [4, 6], [4, 7], [4, 8], [4, 9], [4, 16], [4, 17],
+            [5, 6], [5, 7], [5, 8], [5, 9], [5, 16], [5, 17],
+
+            [12, 1], [12, 22], [12, 23], [13, 22], [13, 23],
+
+
+            [4, 12], [4, 13], [5, 12], [5, 13], [14, 20], [14, 21], [15, 20], [15, 21],
+
+            [9, 6],
+            [10, 6], [10, 7], [11, 6], [11, 7],
+
+            [14, 3], [14, 4], [14, 5], [15, 5],
+            [14, 12], [14, 13], [15, 12], [15, 13],
+            [3, 1],
+            [12, 18], [12, 19], [13, 18], [13, 19],
+            [8, 12], [8, 13], [9, 12], [9, 13],
+          ],
+          medium: [
+            [0, 8], [0, 10], [0, 16],
+            [2, 2], [2, 8], [2, 10], [2, 16], [2, 18],
+            [4, 4], [4, 10], [4, 18],
+            [6, 4], [6, 18], [8, 4], [8, 18], [8, 20], [8, 22],
+            [10, 4], [10, 18], [10, 20], [10, 22],
+            [12, 2], [12, 4], [12, 6], [14, 6], [12, 20],
+            [4, 14], [10, 8], [10, 12], [10, 10],
+            [12, 12], [14, 18], [14, 22], [8, 10],
+          ],
+          large: [
+            [0, 4], [0, 12], [4, 0], [4, 20], [8, 0],
+            [12, 8],
+          ]
+        },
+        space_right: 2,
+        space_bottom: 2
+      },
+      {
+        alphabet: 'U',
+        width: 16,
+        height: 24,
+        bubbles: {
+          small: [
+            [0, 8], [0, 9], [1, 3], [1, 8], [1, 9],
+            [3, 1], [4, 2], [4, 3], [4, 10], [4, 11], [4, 12], [4, 13], [4, 16], [4, 17],
+            [5, 2], [5, 3], [5, 10], [5, 11], [5, 12], [5, 13], [5, 16], [5, 17],
+            [6, 0], [6, 1],
+            [7, 0], [7, 1],
+
+
+            [10, 14], [10, 15], [11, 14], [11, 15],
+            [12, 1], [14, 3], [14, 4], [14, 5], [14, 12], [14, 13],
+            [15, 5], [15, 12], [15, 13],
+            [0, 20], [0, 21], [1, 20], [1, 21],
+          ],
+          medium: [
+            [0, 10], [0, 12], [0, 14], [2, 2], [2, 8], [2, 10], [2, 12], [2, 14],
+            [4, 0], [4, 4], [4, 6], [4, 8], [4, 14], [4, 18],
+            [6, 2], [6, 4], [8, 4],
+            [10, 4], [10, 6], [10, 8], [10, 10], [10, 12], [10, 16], [10, 18], [10, 20], [10, 22],
+            [12, 2], [12, 4], [12, 6], [12, 12], [12, 14],
+            [14, 6], [14, 14],
+            [0, 22],
+          ],
+          large: [
+            [0, 4], [0, 16], [2, 20], [8, 0], [12, 8], [12, 16], [12, 20]
+          ]
+        },
+        space_right: 2,
+        space_bottom: 2
+      },
+    ];
+    const COLORS = {
+      White: ['ffffff'],
+      Black: ['000000'],
+      Purple: ['210b5a', '5037ef', '5228cc', '6c069f', '954bcc', 'c7377d'],
+      Blue: ['0014d9', '1a80c1', '005b9a', '2822bb', '50c4ff', '0076ff'],
+      Green: ['58b23c', '004200', '3a460d', '167246', '005140', 'a9c740'],
+      Yellow: ['ffff00', 'ffce0a', 'ff9b1b', 'ff7a00', 'ec4e04', 'd50f12'],
+      Red: ['ff0037', 'c5471e', 'b70f73', '40003f', '9b002d', '670028'],
+    };
+    var canvas_background = '0xffffff';
+    var strings = ['HAPPY', 'BIRTHDAY', 'GUDDU'];
+
+
+    if( !selectedColor || !COLORS.hasOwnProperty(selectedColor) ){
+      selectedColor = 'Purple';
+    }
+    if( selectedColor == 'White' || selectedColor == 'Blue' || selectedColor == 'Yellow' ){
+      canvas_background = '0x000000';
+    }
+
+
+    var Animation = function(){
+      var self = this;
+      self.grid_size = {
+        width: 8,
+        height: 8
+      };
+      self.helper_grid = false;
+
+      self.stage_center = {
+        x: renderer.width / 2,
+        y: renderer.height / 2
+      };
+
+      self.circle_radius = {
+        small: 4,
+        medium: 8,
+        large: 16
+      };
+      self.circle_colors = COLORS[selectedColor];
+      self.circle_velocity = {
+        min_vx: .1,
+        max_vx: 1,
+        min_vy: .1,
+        max_vy: 1
+      };
+
+      self.letter_circles = new Array();
+
+      self.letter_status = new Array();
+      for( var i = 0; i < strings.length; i++ ){
+        /* Create new array for current string */
+        if( typeof self.letter_status[i] === 'undefined' ) self.letter_status.push(new Array());
+        for( var j = 0; j < strings[i].length; j++ ){
+          self.letter_status[i].push({
+            reforming: false,
+            circles_reformed: false,
+            groups_reformed: false,
+            reform_ease: null,
+            reform_start_time: null
+          });
+        }
+      }
+
+      self.animate_circles = true;
+      self.reform_ease = 'easeInOutCubic';
+      self.last_reform_ease = 'easeInOutCubic';
+      self.reform_duration = 3000;
+      self.reforming_letters_indexes = new Array();
+      for( var i = 0; i < strings.length; i++ ){
+        /* Push array for each string */
+        self.reforming_letters_indexes.push( new Array() );
+      }
+      self.reforming_count = 0;
+
+      self.getDrawingBounds();
+      self.drawLetters();
+    };
+
+    Animation.prototype.getDrawingBounds = function(){
+      var self = this;
+      var total_width = total_height = 0;
+
+      self.string_bounds = new Array();
+
+      /* Calculate total_width and total_height of drawing area */
+      for( var i = 0; i < strings.length; i++ ){
+        var string_width = 0;
+        var string_height = 0;
+        var margin_bottom = 0;
+        for( var j = 0; j < strings[i].length; j++ ){
+          var returned = letterStructure.find(x => x.alphabet === strings[i][j]);
+
+          /* If letter is present in structures */
+          if( returned ) {
+            string_width += returned.width * self.grid_size.width;
+            var calculated_height = returned.height * self.grid_size.height;
+            string_height = string_height > calculated_height ? string_height : calculated_height;
+
+            /* If last characted - skip space_right */
+            if( j !== strings[i].length - 1 ){
+              string_width += returned.space_right * self.grid_size.width;
+            }
+
+          }
+        }
+
+        /* If last string - skip space_bottom */
+        if( i !== strings.length - 1 ){
+          margin_bottom += 2 * self.grid_size.height;
+        }
+
+        total_width = total_width > string_width ? total_width : string_width;
+        total_height += string_height + margin_bottom;
+
+        self.string_bounds.push( {width: string_width, height: string_height, gap_bottom: margin_bottom} );
+      }
+
+      self.drawing_bounds = {
+        /* Start point is bottom left corner */
+        start_x: self.stage_center.x - (total_width / 2),
+        start_y: self.stage_center.y + (total_height / 2),
+        width: total_width,
+        height: total_height
+      }
+
+      /* Calculate bounds for each string */
+      for( var i = 0; i < self.string_bounds.length; i++ ){
+        var top_gap = 0;
+        for( var j = 0; j < i; j++ ){
+          top_gap += self.string_bounds[j].height + self.string_bounds[j].gap_bottom;
+        }
+
+        self.string_bounds[i].start_x = self.stage_center.x - (self.string_bounds[i].width / 2);
+        self.string_bounds[i].start_y = self.drawing_bounds.start_y - self.drawing_bounds.height + top_gap + self.string_bounds[i].height;
+      }
+
+
+
+      self.drawing_box = new PIXI.Graphics().lineStyle(2, 0xff0000);
+
+      // self.drawing_box.moveTo( self.drawing_bounds.start_x, 0 );
+      // self.drawing_box.lineTo( self.drawing_bounds.start_x, renderer.height );
+      // self.drawing_box.moveTo( 0, self.drawing_bounds.start_y );
+      // self.drawing_box.lineTo( renderer.width, self.drawing_bounds.start_y );
+      // self.drawing_box.moveTo( self.drawing_bounds.start_x + self.drawing_bounds.width, renderer.height );
+      // self.drawing_box.lineTo( self.drawing_bounds.start_x + self.drawing_bounds.width, 0 );
+      // self.drawing_box.moveTo( renderer.width, self.drawing_bounds.start_y - self.drawing_bounds.height );
+      // self.drawing_box.lineTo( 0, self.drawing_bounds.start_y - self.drawing_bounds.height );
+      // self.drawing_box.moveTo( self.drawing_bounds.start_x, 0 );
+
+      self.drawing_box.moveTo( self.drawing_bounds.start_x, self.drawing_bounds.start_y );
+      self.drawing_box.lineTo( self.drawing_bounds.start_x, self.drawing_bounds.start_y - self.drawing_bounds.height );
+      self.drawing_box.lineTo( self.drawing_bounds.start_x + self.drawing_bounds.width, self.drawing_bounds.start_y - self.drawing_bounds.height );
+      self.drawing_box.lineTo( self.drawing_bounds.start_x + self.drawing_bounds.width, self.drawing_bounds.start_y );
+      self.drawing_box.lineTo( self.drawing_bounds.start_x, self.drawing_bounds.start_y );
+
+      stage.addChild( self.drawing_box );
+
+      /* Only visible if helpers are enabled */
+      self.drawing_box.visible = self.helper_grid;
+
+    }
+
+    Animation.prototype.drawLetters = function(){
+      var self = this;
+
+
+      var grid = self.grid_size;
+      let velocity = self.circle_velocity;
+
+      for( var i = 0; i < strings.length; i++ ){
+        var start_x = self.string_bounds[i].start_x;
+        var start_y = self.string_bounds[i].start_y;
+
+        /* Create new array for current string */
+        if( typeof self.letter_circles[i] === 'undefined' ) self.letter_circles.push(new Array());
+
+        for( var j = 0; j < strings[i].length; j++ ){
+
+          /* Get character structure */
+          var letter = letterStructure.find(x => x.alphabet === strings[i][j]);
+          // if( letter === 'undefined' ) continue;
+
+          /* Create object for holding current character circles */
+          if( typeof self.letter_circles[i][j] === 'undefined' ) self.letter_circles[i].push({});
+
+          for( var size in letter.bubbles ){
+            var circles = letter.bubbles[size];
+            var radius = self.circle_radius[size];
+
+            /* Check if array exist for current size */
+            self.letter_circles[i][j][size] = typeof self.letter_circles[i][j][size] !== 'undefined' ? self.letter_circles[i][j][size] : new Array();
+
+            for( var k = 0; k < circles.length; k++ ){
+              var x = start_x + ( circles[k][0] * grid.width ) + radius;
+              var y = start_y - ( circles[k][1] * grid.height ) - radius;
+
+              var circle = new PIXI.Graphics();
+              // var color = '0xffffff';
+              let color = '0x' + self.circle_colors[ Math.floor(Math.random() * self.circle_colors.length) ];
+              circle.beginFill(color);
+              circle.drawCircle(0, 0, radius);
+              circle.endFill();
+
+
+              /* Math.floor(Math.random() * (max - min + 1)) + min; */
+              circle.x = Math.floor( Math.random() * (renderer.width - radius - radius + 1) ) + radius;
+              circle.y = Math.floor( Math.random() * (renderer.height - radius - radius + 1) ) + radius;
+
+              /* Add velocity to circle */
+              let vx = Math.random() * (velocity.max_vx - velocity.min_vx) + velocity.min_vx;
+              vx = Math.random() > 0.5 ? vx : -vx;
+
+              let vy = Math.random() * (velocity.max_vy - velocity.min_vy) + velocity.min_vy;
+              vy = Math.random() > 0.5 ? vy : -vy;
+
+              /* Cache pixiJS graphics object for animation */
+              self.letter_circles[i][j][size].push({
+                destination: {x: x, y: y},
+                graphic: circle,
+                radius: radius,
+                color: color,
+                vx: vx,
+                vy: vy
+              });
+
+              stage.addChild(circle);
+            }
+          }
+
+          start_x += ( (letter.width + letter.space_right) * self.grid_size.width);
+        }
+      }
+    }
+
+    Animation.prototype.animateCircles = function(){
+      var self = this;
+      for( var i = 0; i < strings.length; i++ ){
+        for( var j = 0; j < strings[i].length; j++ ){
+
+          /* Don't animate when reforming */
+          if( self.letter_status[i][j].reforming == true ) continue;
+
+          for( var size in self.letter_circles[i][j] ){
+            var circles = self.letter_circles[i][j][size];
+
+            //
+            for( var k = 0; k < circles.length; k++ ){
+              circles[k].graphic.x += circles[k].vx;
+              circles[k].graphic.y += circles[k].vy;
+
+              /* Collision detection - ignore invisible circles */
+              for( var l = i; l < strings.length && circles[k].graphic.visible != false; l++ ){
+                for( var m = 0; m < strings[l].length; m++ ){
+
+                  /* Don't collide with circles which are reforming */
+                  if( self.letter_status[l][m].reforming == true ) continue;
+
+                  for( let s in self.letter_circles[l][m] ){
+                    let c = self.letter_circles[l][m][s];
+                    for( let n = 0; n < c.length; n++ ){
+                      /* Continu if comparing with same circle or if circle is not visible */
+                      if( s === size && m === j && l === i && n === k || c[l].graphic.visible == false ) continue;
+
+                      self.collisionDetection(circles[k], c[n]);
+                    }
+                  }
+                }
+
+              }
+
+              /* Bounce from screen ends */
+              if( circles[k].graphic.x > renderer.width - circles[k].radius ){
+                circles[k].vx = - Math.abs( circles[k].vx );
+              }
+              if( circles[k].graphic.x < circles[k].radius ){
+                circles[k].vx = Math.abs( circles[k].vx );
+              }
+              if( circles[k].graphic.y > renderer.height - circles[k].radius ){
+                circles[k].vy = - Math.abs( circles[k].vy );
+              }
+              if( circles[k].graphic.y < circles[k].radius ){
+                circles[k].vy = Math.abs( circles[k].vy );
+              }
+
+            }
+            //
+
+          }
+        }
+      }
+    }
+
+    Animation.prototype.collisionDetection = function(c1, c2){
+      let repulsion = .2;
+      let dx = c2.graphic.x - c1.graphic.x,
+      dy = c2.graphic.y - c1.graphic.y,
+
+      /* d = distance from `a` to `b` */
+      d = Math.sqrt(dx*dx + dy*dy),
+
+      ux = dx / d,
+      uy = dy / d;
+
+      /* If the balls are on top of one another */
+      if(d <= c1.radius + c2.radius){
+        /* then execute a repulsive force to push them apart, which resembles collision. */
+        c1.vx -= ux * repulsion;
+        c1.vy -= uy * repulsion;
+        c2.vx += ux * repulsion;
+        c2.vy += uy * repulsion;
+      }
+    };
+
+    Animation.prototype.initLetterReform = function(){
+      var self = this;
+
+
+      /* Reform in order */
+      var all_reformed = true;
+      for( var i = 0; i < strings.length; i++ ){
+        for( var j = 0; j < strings[i].length; j++ ){
+          if( self.letter_status[i][j].reforming == false ){
+            all_reformed = false;
+
+            /* Initialize circles reform */
+            for( size in self.letter_circles[i][j] ){
+              var circles = self.letter_circles[i][j][size];
+              for( let k = 0; k < circles.length; k++ ){
+                circles[k].reform_origin = {x: circles[k].graphic.x, y: circles[k].graphic.y};
+              }
+            }
+
+            /* Set variables to start reforming */
+            self.letter_status[i][j].reforming = true;
+            self.letter_status[i][j].reform_start_time = Date.now();
+            /* Set different easing for last character */
+            self.letter_status[i][j].reform_ease = self.letter_status[i].length - 1 == j  ? self.reform_ease : self.last_reform_ease;
+            self.reforming_letters_indexes[i].push(j);
+            self.reforming_count++;
+            break;
+          }
+        }
+        if( !all_reformed ) break;
+      }
+
+      if( all_reformed ) {
+        /* Done Animation */
+      }
+
+    };
+
+    Animation.prototype.reform = function(){
+      var self = this;
+
+      for( var i = 0; i < self.reforming_letters_indexes.length; i++ ){
+        for( var j = 0; j < self.reforming_letters_indexes[i].length; j++ ){
+          var index = self.reforming_letters_indexes[i][j];
+          var reform_ease = self.letter_status[i][index].reform_ease;
+          var time_elapsed = Date.now() - self.letter_status[i][index].reform_start_time;
+
+          /* Check if circles are reformed already */
+          if( !self.letter_circles[i][index].circles_reformed ){
+            /* Animate circles */
+            for( var size in self.letter_circles[i][index] ){
+              var circles = self.letter_circles[i][index][size];
+              for( k = 0; k < circles.length; k++ ){
+
+                if( time_elapsed > self.reform_duration ){
+                  circles[k].graphic.x = circles[k].destination.x;
+                  circles[k].graphic.y = circles[k].destination.y;
+                  self.letter_status[i][index].circles_reformed = true;
+
+                } else {
+                  circles[k].graphic.x = Easing[reform_ease](
+                    time_elapsed,
+                    circles[k].reform_origin.x,
+                    circles[k].destination.x - circles[k].reform_origin.x,
+                    self.reform_duration );
+                  circles[k].graphic.y = Easing[reform_ease](
+                    time_elapsed,
+                    circles[k].reform_origin.y,
+                    circles[k].destination.y - circles[k].reform_origin.y,
+                    self.reform_duration );
+                }
+
+              }
+            }
+
+            if( self.letter_status[i][index].circles_reformed ){
+              self.reforming_count--;
+            }
+          }
+
+          if( self.letter_status[i][index].circles_reformed ){
+            self.reforming_letters_indexes[i].splice(j , 1);
+          }
+        }
+      }
+
+    };
+
+
+    function initialize(){
+      renderer = PIXI.autoDetectRenderer(size[0], size[1], {antialias: true, transparent: false});
+      renderer.backgroundColor = canvas_background;
+      renderer.autoResize = false;
+      renderer.resize(size[0], size[1]);
+      /* Add the canvas to the HTML document */
+      document.body.appendChild(renderer.view);
+
+      stage = new PIXI.Container();
+
+      anim = new Animation();
+
+    }
+
+    function resize() {
+      if (window.innerWidth / window.innerHeight >= aspect_ratio) {
+          var w = window.innerHeight * aspect_ratio;
+          var h = window.innerHeight;
+      } else {
+          var w = window.innerWidth;
+          var h = window.innerWidth / aspect_ratio;
+      }
+      renderer.view.style.width = w + 'px';
+      renderer.view.style.height = h + 'px';
+    }
+    window.onresize = resize;
+
+    function update(){
+      if( anim.animate_circles ){
+        anim.animateCircles();
+      }
+
+      if( anim.reforming_count > 0 ){
+        anim.reform();
+      }
+
+      /* Loop this function */
+      requestAnimationFrame(update);
+
+      /* Tell the `renderer` to `render` the `stage` */
+      renderer.render(stage);
+    }
+
+    initialize();
+    resize();
+    update();
+
+    function reformNext(){
+      anim.initLetterReform();
+    }
+
+    var isTouch = false;
+    var userAgent = navigator.userAgent;
+    // Type device
+    if ( (userAgent.indexOf('iPhone') !== -1) || (userAgent.indexOf('Android') !== -1 && userAgent.indexOf('Mobile') !== -1 ))  {
+        isTouch = true;
+    } else if (userAgent.indexOf('iPad') !== -1 || userAgent.indexOf('Android') !== -1) {
+        isTouch = true;
+    }
+
+    if( isTouch ){
+      renderer.view.addEventListener('touchstart', reformNext, false);
+    }else{
+      renderer.view.addEventListener('mousedown', reformNext, false);
+    }
+
+    function removeModal(){
+
+      var modal = document.getElementById('modal');
+      modal.parentNode.removeChild(modal);
+    }
+  </script>
+  <!-- Google Analytics -->
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-100827179-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+</html>
