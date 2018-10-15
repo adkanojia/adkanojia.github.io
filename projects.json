@@ -42,7 +42,7 @@
     "description": "Jerwood Open Forest is a collaboration between Jerwood Charitable Foundation and Forestry Commission England with the support of Arts Council England.",
     "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
     "role": "Development and deployment of a complete wordpress custom theme.",
-    "access": "http://jamiefobertarchitects.com"
+    "access": "http://jerwoodopenforest.org"
   },
   {
     "id": 6,
@@ -51,7 +51,7 @@
     "description": "Takay Photography is a photographers portfolio in which the art is displayed in a very unique design.",
     "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
     "role": "Development and deployment of a complete wordpress custom theme.",
-    "access": "http://takayphotography.com/"
+    "access": "http://takayphotography.com"
   },
   {
     "id": 7,
@@ -60,7 +60,7 @@
     "description": "Tim Flach is a London-based photographer, artist and director, with work in several major international public collections, including the National Media Museum, UK and the Swedish Museum of Natural History. He is best known for his highly conceptual images of animals.",
     "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
     "role": "Development and deployment of a complete wordpress custom theme.",
-    "access": "http://timflach.com/"
+    "access": "http://timflach.com"
   },
   {
     "id": 8,
@@ -69,7 +69,7 @@
     "description": "Haeckels is a natural fragrance and skin care brand. All their hand crafted products are formulated in their clifftop Lab in Margate where they only use and distill locally growing botanicals that offer the very best anti-oxidant properties.",
     "technology": "Wordpress, PHP, HTML, CSS and JavaScript.",
     "role": "Development and deployment of a complete E-Commerce solution.",
-    "access": "http://haeckels.co.uk/"
+    "access": "http://haeckels.co.uk"
   },
   {
     "id": 9,
@@ -89,7 +89,7 @@
     "role": "Complete development and deployment on Amazon AWS Server.",
     "access": "http://hellships.hla.net/"
   },
-  
+
   {
     "id": 11,
     "title": "F-Troupe",
